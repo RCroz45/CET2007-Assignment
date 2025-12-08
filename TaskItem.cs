@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CET2007_Assignment
+{
+    public enum PriorityLevel
+    {
+        Low,
+        Medium,
+        High
+    }
+
+    public enum TaskStatus
+    {
+        ToDo,
+        InProgress,
+        Done
+    }
+
+    public class TaskItem
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Assignee { get; set; }
+        public DateTime DueDate { get; set; }
+        public PriorityLevel Priority {  get; set; }
+        public TaskStatus Status { get; set; }
+
+
+
+    }
+
+    
+}
