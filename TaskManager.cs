@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CET2007_Assignment
 {
     public class TaskManager
     {
+        private readonly string dataFilePath = "tasks.txt";
         // this will hold the tasks in memory
         private List<TaskItem> tasks = new List<TaskItem>();
+
 
         // this will return all the tasks to display
         public List<TaskItem> GetAllTasks()
@@ -87,8 +90,96 @@ namespace CET2007_Assignment
             }
         
         }
-    
-    
+
+        public bool UpdateTaskStatus(int id, TaskStatus newStatus)
+        {
+            TaskItem task = GetTaskById(id);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            task.Status = newStatus;
+            return true;
+        
+        }
+
+        public void SaveTasksToFile()
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(dataFilePath))
+                {
+                    foreach (TaskItem t in tasks)
+                    {
+                        string line = string.Join("|", t.Id, t.Title.Replace("|", "/"), t.Assignee.Replace("|", "/"), t.DueDate.ToString("o"), (int)t.Priority, (int)t.Status);
+
+                        sw.WriteLine(line);
+                    }
+
+                }
+
+                Console.WriteLine("Tasks saved to file");
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving tasks: " + ex.Message);
+            }
+        
+            
+        }
+
+        public void LoadTasksFromFile()
+        {
+            try
+            {
+                if (!File.Exists(dataFilePath))
+                {
+                    
+                    return;
+                }
+
+                string[] lines = File.ReadAllLines(dataFilePath);
+                tasks.Clear();
+
+                foreach (string line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    string[] parts = line.Split('|');
+                    if (parts.Length != 6)
+                        continue; 
+
+                    int id = int.Parse(parts[0]);
+                    string title = parts[1];
+                    string assignee = parts[2];
+                    DateTime dueDate = DateTime.Parse(parts[3]);
+                    PriorityLevel priority = (PriorityLevel)int.Parse(parts[4]);
+                    TaskStatus status = (TaskStatus)int.Parse(parts[5]);
+
+                    TaskItem task = new TaskItem();
+                    task.Id = id;
+                    task.Title = title;
+                    task.Assignee = assignee;
+                    task.DueDate = dueDate;
+                    task.Priority = priority;
+                    task.Status = status;
+
+                    tasks.Add(task);
+                }
+
+                Console.WriteLine("Tasks loaded from file.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error loading tasks: " + ex.Message);
+            }
+        }
+
+
     }
 
 

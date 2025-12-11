@@ -12,6 +12,7 @@ namespace CET2007_Assignment
         {
 
             TaskManager manager = new TaskManager();
+            manager.LoadTasksFromFile();
 
             bool exit = false;
 
@@ -23,6 +24,9 @@ namespace CET2007_Assignment
                 Console.WriteLine("3. Search task by ID");
                 Console.WriteLine("4. Sort tasks by due date");
                 Console.WriteLine("5. Sort tasks by priority");
+                Console.WriteLine("6. Update task status");
+                Console.WriteLine("7. Save tasks to file");
+                Console.WriteLine("8. Load tasks from file");
                 Console.WriteLine("0. Exit");
                 Console.Write("Choose an option: ");
 
@@ -47,7 +51,17 @@ namespace CET2007_Assignment
                         manager.SortByPriority();
                         Console.WriteLine("Tasks sorted by priority.");
                         break;
+                    case "6":
+                        UpdateTaskStatus(manager);
+                        break;
+                    case "7":
+                        manager.SaveTasksToFile();
+                        break;
+                    case "8":
+                        manager.LoadTasksFromFile();
+                        break;
                     case "0":
+                        manager.SaveTasksToFile();
                         exit = true;
                         break;
                     default:
@@ -231,6 +245,39 @@ namespace CET2007_Assignment
             {
                 Console.WriteLine("Task found:");
                 Console.WriteLine($"{found.Id} - {found.Title} - {found.Assignee} - Due: {found.DueDate:d} - {found.Priority} - {found.Status}");
+            }
+        }
+
+        static void UpdateTaskStatus(TaskManager manager)
+        {
+            Console.Write("Enter task ID to update: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid ID.");
+                return;
+            }
+
+            Console.Write("Enter new status (ToDo, InProgress, Done): ");
+            string statusText = Console.ReadLine();
+
+            try
+            {
+                TaskStatus newStatus = (TaskStatus)Enum.Parse(typeof(TaskStatus), statusText, true);
+
+                bool updated = manager.UpdateTaskStatus(id, newStatus);
+
+                if (updated)
+                {
+                    Console.WriteLine("Task status updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Task not found.");
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Invalid status entered.");
             }
         }
 
