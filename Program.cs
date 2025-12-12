@@ -27,6 +27,7 @@ namespace CET2007_Assignment
                 Console.WriteLine("6. Update task status");
                 Console.WriteLine("7. Save tasks to file");
                 Console.WriteLine("8. Load tasks from file");
+                Console.WriteLine("9. Generate report");
                 Console.WriteLine("0. Exit");
                 Console.Write("Choose an option: ");
 
@@ -59,6 +60,9 @@ namespace CET2007_Assignment
                         break;
                     case "8":
                         manager.LoadTasksFromFile();
+                        break;
+                    case "9":
+                        manager.GenerateReport();
                         break;
                     case "0":
                         manager.SaveTasksToFile();

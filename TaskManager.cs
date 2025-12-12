@@ -200,7 +200,40 @@ namespace CET2007_Assignment
             File.AppendAllText(logPath, logEntry + Environment.NewLine);
         }
 
+        public void GenerateReport()
+        {
+            string reportPath = "report.txt";
+            List<string> lines = new List<string>();
 
+            lines.Add("=== TASK REPORT ===");
+            lines.Add($"Generated: {DateTime.Now}");
+            lines.Add("");
+
+            lines.Add("Overdue Tasks:");
+            foreach (var t in tasks)
+            {
+                if (t.DueDate.Date < DateTime.Today && t.Status != TaskStatus.Done)
+                {
+                    lines.Add($"ID {t.Id}: {t.Title} (Due {t.DueDate:d}, {t.Priority})");
+                }
+            }
+            lines.Add("");
+            lines.Add("Upcoming Tasks (next 7 days):");
+            foreach (var t in tasks)
+            {
+                if (t.DueDate.Date >= DateTime.Today && t.DueDate.Date <= DateTime.Today.AddDays(7))
+                {
+                    lines.Add($"ID {t.Id}: {t.Title} (Due {t.DueDate:d}, {t.Priority}, {t.Status})");
+                }
+            }
+            lines.Add("");
+
+            File.WriteAllLines(reportPath, lines);
+
+            LogAction("Generated task report.");
+
+            Console.WriteLine("Report created: report.txt");
+        }
 
 
     }
