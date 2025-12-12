@@ -20,6 +20,7 @@ namespace CET2007_Assignment
             return tasks;  
         }
 
+        // this is the add task method
         public bool AddTask(TaskItem task)
         {
             if (task == null)
@@ -38,12 +39,16 @@ namespace CET2007_Assignment
 
 
             tasks.Add(task);
+            // this will log the added task
+            LogAction($"Created task (ID: {task.Id}, Title: {task.Title})");
             return true;
+            
 
 
 
         }
 
+        // this is the method for searching tasks by ID
         public TaskItem GetTaskById(int id)
         {
             foreach (var task in tasks)
@@ -57,6 +62,7 @@ namespace CET2007_Assignment
             return null;
         }
 
+        // this is the method for sorting by due date
         public void SortByDueDate()
         {
             for (int i = 0; i < tasks.Count - 1; i++)
@@ -73,6 +79,7 @@ namespace CET2007_Assignment
             }
         }
 
+        // this is the method for sorting by priority
         public void SortByPriority()
         {
             for (int i = 0; i < tasks.Count - 1; i++)
@@ -101,6 +108,7 @@ namespace CET2007_Assignment
             }
 
             task.Status = newStatus;
+            LogAction($"Updated task {id} status: {newStatus}");
             return true;
         
         }
@@ -121,6 +129,7 @@ namespace CET2007_Assignment
                 }
 
                 Console.WriteLine("Tasks saved to file");
+                LogAction("Saved all tasks to file.");
             }
 
             catch (Exception ex)
@@ -143,6 +152,8 @@ namespace CET2007_Assignment
 
                 string[] lines = File.ReadAllLines(dataFilePath);
                 tasks.Clear();
+
+                int loadedCount = 0;
 
                 foreach (string line in lines)
                 {
@@ -169,9 +180,11 @@ namespace CET2007_Assignment
                     task.Status = status;
 
                     tasks.Add(task);
+                    loadedCount++; 
                 }
 
                 Console.WriteLine("Tasks loaded from file.");
+                LogAction($"Loaded {loadedCount} tasks from file.");
             }
             catch (Exception ex)
             {
@@ -179,11 +192,18 @@ namespace CET2007_Assignment
             }
         }
 
+        private void LogAction(string message)
+        {
+            string logPath = "log.txt";
+            string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}";
+
+            File.AppendAllText(logPath, logEntry + Environment.NewLine);
+        }
+
+
+
 
     }
-
-
-    //commit test
 
 
 }

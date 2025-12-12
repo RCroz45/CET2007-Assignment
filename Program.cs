@@ -70,94 +70,8 @@ namespace CET2007_Assignment
                 }
             }
 
-
-            TaskItem task = new TaskItem();
-            {
-                task.Id = 1;
-                task.Title = "test task";
-                task.Assignee = "Alice";
-                task.DueDate = DateTime.Today.AddDays(3);
-                task.Priority = PriorityLevel.Low;
-                task.Status = TaskStatus.ToDo;
-
-
-
-            };
-
-            TaskItem task2 = new TaskItem();
-            {
-                task2.Id = 2;
-                task2.Title = "test task 2";
-                task2.Assignee = "Bob";
-                task2.DueDate = DateTime.Today.AddDays(1);
-                task2.Priority = PriorityLevel.Medium;
-                task2.Status = TaskStatus.ToDo;
-                manager.AddTask(task2);
-            }
-
-            TaskItem task3 = new TaskItem();
-            {
-                task3.Id = 3;
-                task3.Title = "test task 3";
-                task3.Assignee = "Charlie";
-                task3.DueDate = DateTime.Today.AddDays(7);
-                task3.Priority = PriorityLevel.High;
-                task3.Status = TaskStatus.ToDo;
-                manager.AddTask(task3);
-            }
-
-            bool added = manager.AddTask(task);
-
-            if (added)
-            {
-                Console.WriteLine("task added succesfully");
-
-            }
-            else
-            {
-                Console.WriteLine("failed");
-            }
-
-
-            Console.WriteLine("\nAll tasks: ");
-            foreach (var t in manager.GetAllTasks())
-            {
-                Console.WriteLine($"{t.Id} - {t.Title} - {t.Assignee}");
-            }
-
-            Console.ReadLine();
-
-            Console.WriteLine("\nSearch test:");
-            TaskItem found = manager.GetTaskById(1);
-
-            if (found != null)
-            {
-                Console.WriteLine($"Found Task: {found.Title}");
-            }
-            else
-            {
-                Console.WriteLine("task not found");
-            }
-            Console.ReadLine();
-
-            manager.SortByDueDate();
-
-            Console.WriteLine("\nAll tasks (Sorted by due date): ");
-            foreach (var t in manager.GetAllTasks())
-            {
-                Console.WriteLine($"{t.Id} - {t.Title} - {t.Assignee} - due: {t.DueDate:d} - Priority: {t.Priority}");
-            }
-            Console.ReadLine();
-
-            manager.SortByPriority();
-
-            Console.WriteLine("\nAll tasks (Sorted by priority): ");
-            foreach (var t in manager.GetAllTasks())
-            {
-                Console.WriteLine($"{t.Id} - {t.Title} - {t.Assignee} - due: {t.DueDate:d} - Priority: {t.Priority}");
-            }
-            Console.ReadLine();
         }
+
         static void AddTask(TaskManager manager)
         {
             try
@@ -195,16 +109,22 @@ namespace CET2007_Assignment
 
                 if (added)
                 {
+                    Console.WriteLine(" ");
                     Console.WriteLine("Task added successfully.");
+                    Console.WriteLine(" ");
                 }
                 else
                 {
+                    Console.WriteLine(" ");
                     Console.WriteLine("Could not add task. Maybe that ID already exists?");
+                    Console.WriteLine(" ");
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(" ");
                 Console.WriteLine("Error creating task: " + ex.Message);
+                Console.WriteLine(" ");
             }
 
 
@@ -215,10 +135,12 @@ namespace CET2007_Assignment
 
             if (all.Count == 0)
             {
+                Console.WriteLine(" ");
                 Console.WriteLine("No tasks yet.");
                 return;
             }
-
+            
+            Console.WriteLine(" ");
             Console.WriteLine("\n=== All tasks ===");
             foreach (TaskItem t in all)
             {
